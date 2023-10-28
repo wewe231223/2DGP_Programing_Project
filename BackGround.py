@@ -15,11 +15,14 @@ class BackGround:
 
 
     def render(self):
+        # 산 부분
         self.image5.draw(960, 540, 1920, 1080)
         self.image4.draw(960, 540, 1920, 1080)
-        self.image3.draw(960, 540, 1920, 1080)
-        self.image2.draw(960, 540, 1920, 1080)
-        self.image1.composite_draw(-pi / 6, '', 1920, 540, 1920, 1080)
+
+        # 도로 부분
+        self.image3.composite_draw(-pi / 12, '', 960, 540, 1920, 1080)
+        self.image2.composite_draw(-pi / 12, '', 960, 540, 1920, 1080)
+        self.image1.composite_draw(-pi / 12, '', 960, 540, 1920, 1080)
 
 
 

@@ -18,8 +18,8 @@ class Character:
         self.action = 4
         self.width = 150
         self.height = 150
-        self.x = 100
-        self.y = 100
+        self.x = 300
+        self.y = 300
         self.action = 6
         self.frame = 0
 
@@ -29,7 +29,9 @@ class Character:
 
     def update(self):
         self.frame = (self.frame+1) % Behavior_Frame[self.action]
-
+        self.y -= 1
+        self.x -= 1
+        delay(0.1)
         pass
 
 

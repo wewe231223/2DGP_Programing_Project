@@ -1,6 +1,17 @@
 from pico2d import *
 
 
+
+Behavior_Frame = {
+ 0: 4,
+ 1: 1,
+ 2: 8,
+ 3: 3,
+ 4: 7,
+ 5: 3,
+ 6: 5
+}
+
 class Character:
     def __init__(self):
         self.image = load_image("Resources/character_animations.png")
@@ -17,7 +28,11 @@ class Character:
 
 
     def update(self):
-        self.frame = (self.frame+1) % 5
+        self.frame = (self.frame+1) % Behavior_Frame[self.action]
         delay(0.3)
         pass
 
+
+    def behavior(self):
+
+        pass

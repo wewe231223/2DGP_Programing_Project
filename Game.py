@@ -7,7 +7,7 @@ global running
 
 class Game:
     def __init__(self):
-        self.world = []
+        self.world = [[],[]]
 
         self.reset()
 
@@ -23,8 +23,9 @@ class Game:
                 exit(0)
 
 
-        for o in self.world:
-            o.update()
+        for layer in self.world:
+           for object in layer:
+               object.update()
 
 
     def reset(self):
@@ -32,15 +33,16 @@ class Game:
 
         character = Character()
         backGround = BackGround()
-        self.world.append(backGround)
-        self.world.append(character)
+        self.world[0].append(backGround)
+        self.world[1].append(character)
 
         pass
 
 
     def render(self):
-        for o in self.world:
-            o.render()
+        for layer in self.world:
+           for object in layer:
+               object.render()
 
 
 

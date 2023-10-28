@@ -29,7 +29,7 @@ class Character:
 
     def update(self):
         self.frame = (self.frame+1) % Behavior_Frame[self.action]
-        delay(0.3)
+
         pass
 
 

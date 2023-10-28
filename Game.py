@@ -1,5 +1,6 @@
 from pico2d import *
 from Character import *
+from BackGround import BackGround
 global running
 
 
@@ -27,10 +28,13 @@ class Game:
 
 
     def reset(self):
-        open_canvas()
+        open_canvas(1920,1080)
 
         character = Character()
+        backGround = BackGround()
+        self.world.append(backGround)
         self.world.append(character)
+
         pass
 
 

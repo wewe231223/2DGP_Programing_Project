@@ -1,59 +1,51 @@
-from pico2d import *
-from Character import *
-from BackGround import BackGround
-global running
+
+
+def change_mode(mode):
+    global stack
+
+    if len(stack) > 0:
+        stack[-1].finish()
+        stack.pop()
+
+    stack.append(mode)
+    mode.init()
 
 
 
-class Game:
-    def __init__(self):
-        self.world = [[],[]]
+def push_mode(mode):
+    global stack
+    if len(stack) > 0:
+        stack[-1].finish()
+        stack[-1].pop()
 
-        self.reset()
-
-
-    def update(self):
-        global running
-        events = get_events()
-
-        for event in events:
-            if event.type == SDL_QUIT:
-                exit(0)
-            if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-                exit(0)
+    if len(stack) > 0:
+        stack[-1].resume()
 
 
-        for layer in self.world:
-           for object in layer:
-               object.update()
-
-
-    def reset(self):
-        open_canvas(1920, 1080)
-
-        character = Character()
-        backGround = BackGround()
-        self.world[0].append(backGround)
-        self.world[1].append(character)
-
-        pass
-
-
-    def render(self):
-        for layer in self.world:
-           for object in layer:
-               object.render()
+def quit():
+    global running
+    running = False
 
 
 
-    def run(self):
+def run(start_mode):
+    global running,stack
+
+    running = True
+    stack = [start_mode]
+
+
+    start_mode.init()
+
+
+    while running:
+        stack[-1].handle_events()
+        stack[-1].update()
+        stack[-1].draw()
 
 
 
-        while True:
-            clear_canvas()
+    while len(stack) > 0:
+        stack[-1].finish()
+        stack.pop()
 
-            self.update()
-            self.render()
-
-            update_canvas()

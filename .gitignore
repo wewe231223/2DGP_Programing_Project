@@ -6,3 +6,5 @@ __pycache__/Game.cpython-311.pyc
 .idea/misc.xml
 *.xml
 .idea/misc.xml
+*.pyc
+*.xml

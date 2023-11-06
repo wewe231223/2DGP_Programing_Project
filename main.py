@@ -1,5 +1,8 @@
-from Game import Game
+from pico2d import open_canvas, close_canvas
 
+import Game
+import play_mode as start_mode
 
-MainGame = Game()
-MainGame.run()
+open_canvas(1920,1080)
+Game.run(start_mode)
+close_canvas()

@@ -1,6 +1,7 @@
 from pico2d import *
 
 import Game
+import game_world
 
 from Character import Character
 
@@ -20,27 +21,23 @@ def handle_events():
 
 
 
-world = []
 def init():
     global main_character
 
     main_character = Character()
-    world.append(main_character)
-
+    game_world.add_object(main_character,0)
 
 def finish():
     pass
 
 
 def update():
-    for o in world:
-        o.update()
+    game_world.update()
 
 
 def draw():
     clear_canvas()
-    for o in world:
-        o.render()
+    game_world.render()
     update_canvas()
 
 def pause():

@@ -1,4 +1,4 @@
-
+import Timer
 
 def change_mode(mode):
     global stack
@@ -44,8 +44,11 @@ def run(start_mode):
 
     start_mode.init()
 
+    Timer.init()
+
 
     while running:
+        Timer.update()
         stack[-1].handle_events()
         stack[-1].update()
         stack[-1].draw()

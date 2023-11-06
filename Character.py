@@ -50,7 +50,7 @@ class Forward:
 
     @staticmethod
     def do(ch):
-        ch.x += 10
+        ch.x += 0.001
         ch.frame = (ch.frame + 1) % Behavior_Frame[ch.action]
 
     @staticmethod

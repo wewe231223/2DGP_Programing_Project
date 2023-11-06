@@ -4,6 +4,7 @@ import Game
 import game_world
 
 from Character import Character
+import random
 
 
 def handle_events():
@@ -20,12 +21,14 @@ def handle_events():
             main_character.handle_event(event)
 
 
-
 def init():
     global main_character
 
     main_character = Character()
-    game_world.add_object(main_character,0)
+    game_world.add_object(main_character, 2)
+
+
+
 
 def finish():
     pass
@@ -40,8 +43,10 @@ def draw():
     game_world.render()
     update_canvas()
 
+
 def pause():
     pass
+
 
 def resume():
     pass

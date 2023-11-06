@@ -29,7 +29,7 @@ class Game:
 
 
     def reset(self):
-        open_canvas(1920,1080)
+        open_canvas(1920, 1080)
 
         character = Character()
         backGround = BackGround()

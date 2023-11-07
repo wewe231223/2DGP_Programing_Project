@@ -6,7 +6,6 @@ CHARACTER_TIME_PER_ACTION = 0.7
 ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
 
 
-
 Behavior_Frame = {
  0: 4,
  1: 1,
@@ -23,6 +22,18 @@ def right_down(e):
 
 def right_up(e):
     return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
+
+
+def space_down(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
+
+
+def space_up(e):
+    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
+
+
+def end(e):
+    return e[0] == 'ANIMATION_END'
 
 
 class Idle:
@@ -63,15 +74,40 @@ class Forward:
         ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y, 300, 300)
 
 
+class Jump:
+    @staticmethod
+    def enter(ch, e):
+        ch.action = 4
+        pass
+
+    @staticmethod
+    def exit(ch, e):
+        pass
+
+    @staticmethod
+    def do(ch):
+
+        if int(ch.frame) == Behavior_Frame[ch.action] - 1:
+            ch.statemachine.handle_event(("ANIMATION_END",0))
+        else :
+            ch.frame = (ch.frame + Behavior_Frame[ch.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[ch.action]
+
+    @staticmethod
+    def draw(ch):
+
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y, 300, 300)
+
 class Character_StateMachine:
 
     def __init__(self,character):
         self.character = character
         self.cur_state = Idle
         self.transitions = {
-            Idle : {right_down : Forward},
-            Forward : {right_up : Idle}
+            Idle: {right_down : Forward, space_down : Jump},
+            Forward: {right_up : Idle},
+            Jump: {end: Idle}
         }
+
 
 
     def start(self):

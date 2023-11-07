@@ -9,7 +9,7 @@ import random
 
 def CreateVelocity():
 
-    result = random.sample(range(1,100),5)
+    result = random.sample(range(1, 100), 5)
 
     result.sort()
 
@@ -71,20 +71,3 @@ class BackGround:
         self.image2.render()
         self.image1.render()
 
-
-
-class BackGroundManager:
-    def __init__(self):
-       self.BackGround1 = BackGround()
-       self.BackGround2 = BackGround((get_canvas_width() / 2) * 3)
-       self.BackGround3 = BackGround((get_canvas_width() / 2) * 5)
-
-    def render(self):
-        self.BackGround1.render()
-        self.BackGround2.render()
-        self.BackGround3.render()
-
-    def update(self):
-        self.BackGround1.update()
-        self.BackGround2.update()
-        self.BackGround3.update()

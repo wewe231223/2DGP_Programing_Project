@@ -1,5 +1,10 @@
 from pico2d import *
 
+import Timer
+
+CHARACTER_TIME_PER_ACTION = 0.7
+ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
+
 
 
 Behavior_Frame = {
@@ -31,17 +36,17 @@ class Idle:
         pass
     @staticmethod
     def do(ch):
-        ch.frame = (ch.frame+1) % Behavior_Frame[ch.action]
+        ch.frame = (ch.frame + Behavior_Frame[ch.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[ch.action]
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(ch.frame * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y,300,300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y,300,300)
 
 
 class Forward:
     @staticmethod
     def enter(ch, e):
-        ch.action = 3
+        ch.action = 6b  
         pass
 
     @staticmethod
@@ -51,11 +56,11 @@ class Forward:
     @staticmethod
     def do(ch):
         ch.x += 0.001
-        ch.frame = (ch.frame + 1) % Behavior_Frame[ch.action]
+        ch.frame = (ch.frame+ Behavior_Frame[ch.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[ch.action]
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(ch.frame * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y, 300, 300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y, 300, 300)
 
 
 class Character_StateMachine:

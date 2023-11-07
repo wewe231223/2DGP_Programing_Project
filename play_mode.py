@@ -4,6 +4,7 @@ import Game
 import game_world
 
 from Character import Character
+from BackGround import BackGround
 import random
 
 
@@ -26,6 +27,10 @@ def init():
 
     main_character = Character()
     game_world.add_object(main_character, 2)
+
+    background = BackGround()
+    game_world.add_object(background,0)
+
 
 
 

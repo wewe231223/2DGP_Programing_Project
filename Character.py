@@ -46,7 +46,7 @@ class Idle:
 class Forward:
     @staticmethod
     def enter(ch, e):
-        ch.action = 6b  
+        ch.action = 6
         pass
 
     @staticmethod
@@ -93,6 +93,7 @@ class Character_StateMachine:
         self.cur_state.draw(self.character)
 
 
+
 class Character:
     def __init__(self):
         self.image = load_image("Resources/character_animations.png")
@@ -108,9 +109,13 @@ class Character:
 
     def render(self):
         self.statemachine.draw()
+        draw_rectangle(*self.get_bb())
 
     def update(self):
         self.statemachine.update()
 
     def handle_event(self,event):
         self.statemachine.handle_event(("INPUT",event))
+
+    def get_bb(self):
+        return self.x - 40, self.y -40, self.x + 40, self.y + 40

@@ -133,6 +133,7 @@ class Character_StateMachine:
 class Character:
     def __init__(self):
         self.image = load_image("Resources/character_animations.png")
+        self.test = load_image("Resources/Tiles.png")
         self.action = 4
         self.width = 150
         self.height = 150
@@ -143,9 +144,13 @@ class Character:
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
 
+
+
+
     def render(self):
         self.statemachine.draw()
         draw_rectangle(*self.get_bb())
+ #       self.test.clip_draw(0,144 * self.testx,144,144,100,100)
 
     def update(self):
         self.statemachine.update()

@@ -9,7 +9,7 @@ def CreateVelocity():
     result.sort()
     floatresult = []
     for i in result:
-        floatresult.append( float(i) / 10.0 )
+        floatresult.append( float(i) / 100.0 )
 
     print(floatresult)
     return floatresult
@@ -23,20 +23,46 @@ class BackImage:
         self.x = (get_canvas_width() / 2) * (position * 2 - 1)
         self.y = get_canvas_height() / 2
         self.velocity = BackSpeed[depth]
+        self.prevImage = None
+        self.bb_y = None
+
+        if depth == 4:
+            self.bb_y = 30
+
 
 
     def render(self):
         self.image.draw(self.x, self.y, get_canvas_width(),get_canvas_height())
+      #  draw_rectangle(*self.get_bb())
 
     def update(self):
-        self.x -= self.velocity
+        if self.x < -get_canvas_width() :
+            self.x = self.prevImage.x + get_canvas_width() / 2
+        else:
+            self.x -= self.velocity
+
+    def get_bb(self):
+        if self.bb_y:
+            return self.x - get_canvas_width() / 2 , self.bb_y - 30, self.x + get_canvas_width() / 2 , self.bb_y + 30
+        else: return None
 
 class BackGround:
     def __init__(self):
         self.images = [[] for _ in range(5)]
-        for layer in range(5):
-            for i in range(1,4):
-                self.images[layer].append(BackImage(layer,i))
+
+        index = 0
+        for layer in self.images:
+
+            layer.append(BackImage(index,1))
+            layer.append(BackImage(index, 2))
+            layer.append(BackImage(index, 3))
+
+            layer[0].prevImage = layer[-1]
+            layer[1].prevImage = layer[0]
+            layer[2].prevImage = layer[1]
+
+            index += 1
+
 
 
 
@@ -49,4 +75,7 @@ class BackGround:
         for layer in self.images:
             for i in layer:
                 i.render()
+                if i.bb_y:
+                    draw_rectangle(*i.get_bb())
+
 

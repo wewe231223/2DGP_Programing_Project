@@ -34,6 +34,7 @@ class Idle:
     @staticmethod
     def enter(ch,e):
         ch.action = "SLIDE_DOWN"
+        ch.bb_y = 35
         pass
 
     @staticmethod
@@ -52,6 +53,7 @@ class Forward:
     @staticmethod
     def enter(ch, e):
         ch.action = "BOOST"
+        ch.bb_y = 40
         pass
 
     @staticmethod
@@ -132,6 +134,7 @@ class Character:
         self.y = 300
         self.action = 6
         self.frame = 0
+        self.bb_y = 40
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
 
@@ -151,7 +154,8 @@ class Character:
         self.statemachine.handle_event(("INPUT",event))
 
     def handle_collision(self,group,other):
+        
         pass
 
     def get_bb(self):
-        return self.x - 40, self.y -40, self.x + 40, self.y + 40
+        return self.x - 40, self.y -self.bb_y, self.x + 40, self.y + self.bb_y

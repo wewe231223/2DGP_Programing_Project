@@ -28,6 +28,7 @@ class Idle:
     def enter(background,event):
         pass
 
+
     @staticmethod
     def exit(background,event):
         background.acceleration = 1
@@ -36,8 +37,7 @@ class Idle:
     @staticmethod
     def do(background):
         background.velocity += background.acceleration * Timer.delta_time
-        clamp(0.0,background.velocity,100.0)
-
+        if background.velocity <= 0.0 : background.velocity = 0.0
 
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
@@ -127,7 +127,7 @@ class BackGround:
         self.statemachine = BackGround_Statemachine(self)
 
         if depth == 4:
-            self.bb_y = 30
+            self.bb_y = 20
 
 
     def render(self):
@@ -145,3 +145,6 @@ class BackGround:
 
     def handle_event(self,event):
         self.statemachine.handle_event(("INPUT",event))
+
+    def handle_collision(self,group,other):
+        pass

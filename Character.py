@@ -2,44 +2,28 @@ from pico2d import *
 
 import Timer
 
+from input_event_functions import *
+
 CHARACTER_TIME_PER_ACTION = 0.7
 ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
 
 
 Behavior_Frame = {
- 0: 4,
- 1: 1,
- 2: 8,
- 3: 3,
- 4: 7,
- 5: 3,
- 6: 5
+ "DEAD": 4,
+ "LINK_DEAD": 1,
+ "COLLIDE": 8,
+ "SLIDE_DOWN": 3,
+ "JUMP": 7,
+ "WEAVE": 3,
+ "BOOST": 5
 }
 
-def right_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT
-
-
-def right_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_RIGHT
-
-
-def space_down(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_SPACE
-
-
-def space_up(e):
-    return e[0] == 'INPUT' and e[1].type == SDL_KEYUP and e[1].key == SDLK_SPACE
-
-
-def end(e):
-    return e[0] == 'ANIMATION_END'
 
 
 class Idle:
     @staticmethod
     def enter(ch,e):
-        ch.action = 3
+        ch.action = "SLIDE_DOWN"
         pass
 
     @staticmethod
@@ -51,13 +35,13 @@ class Idle:
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y,300,300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Frame[ch.action], ch.width, ch.width, ch.x, ch.y,300,300)
 
 
 class Forward:
     @staticmethod
     def enter(ch, e):
-        ch.action = 6
+        ch.action = "BOOST"
         pass
 
     @staticmethod
@@ -66,18 +50,17 @@ class Forward:
 
     @staticmethod
     def do(ch):
-        ch.x += 0.001
         ch.frame = (ch.frame+ Behavior_Frame[ch.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[ch.action]
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y, 300, 300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Frame[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
 
 
 class Jump:
     @staticmethod
     def enter(ch, e):
-        ch.action = 4
+        ch.action = "JUMP"
         pass
 
     @staticmethod
@@ -86,7 +69,7 @@ class Jump:
 
     @staticmethod
     def do(ch):
-
+        
         if int(ch.frame) == Behavior_Frame[ch.action] - 1:
             ch.statemachine.handle_event(("ANIMATION_END",0))
         else :
@@ -94,8 +77,7 @@ class Jump:
 
     @staticmethod
     def draw(ch):
-
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * ch.action, ch.width, ch.width, ch.x, ch.y, 300, 300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Frame[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
 
 class Character_StateMachine:
 
@@ -134,7 +116,7 @@ class Character:
     def __init__(self):
         self.image = load_image("Resources/character_animations.png")
         self.test = load_image("Resources/Tiles.png")
-        self.action = 4
+        self.action = "SLIDE_DOWN"
         self.width = 150
         self.height = 150
         self.x = 300
@@ -154,6 +136,7 @@ class Character:
 
     def update(self):
         self.statemachine.update()
+        self.y -= 1
 
     def handle_event(self,event):
         self.statemachine.handle_event(("INPUT",event))

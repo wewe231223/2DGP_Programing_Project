@@ -20,10 +20,13 @@ def handle_events():
 
         else:
             main_character.handle_event(event)
+            background.handle_event(event)
+
 
 
 def init():
     global main_character
+    global background
 
     main_character = Character()
     game_world.add_object(main_character, 2)

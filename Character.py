@@ -18,6 +18,16 @@ Behavior_Frame = {
  "BOOST": 5
 }
 
+Behavior_Action= {
+    "DEAD": 0,
+    "LINK_DEAD": 1,
+    "COLLIDE": 2,
+    "SLIDE_DOWN": 3,
+    "JUMP": 4,
+    "WEAVE": 5,
+    "BOOST": 6
+}
+
 
 
 class Idle:
@@ -35,7 +45,7 @@ class Idle:
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Frame[ch.action], ch.width, ch.width, ch.x, ch.y,300,300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y,300,300)
 
 
 class Forward:
@@ -54,7 +64,7 @@ class Forward:
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Frame[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
 
 
 class Jump:
@@ -77,7 +87,7 @@ class Jump:
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Frame[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
+        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
 
 class Character_StateMachine:
 
@@ -115,7 +125,6 @@ class Character_StateMachine:
 class Character:
     def __init__(self):
         self.image = load_image("Resources/character_animations.png")
-        self.test = load_image("Resources/Tiles.png")
         self.action = "SLIDE_DOWN"
         self.width = 150
         self.height = 150
@@ -136,10 +145,13 @@ class Character:
 
     def update(self):
         self.statemachine.update()
-        self.y -= 1
+        if self.y > 100: self.y -= 1
 
     def handle_event(self,event):
         self.statemachine.handle_event(("INPUT",event))
+
+    def handle_collision(self,group,other):
+        pass
 
     def get_bb(self):
         return self.x - 40, self.y -40, self.x + 40, self.y + 40

@@ -19,20 +19,69 @@ def handle_events():
             Game.quit()
 
         else:
-            main_character.handle_event(event)
-            background.handle_event(event)
+            game_world.handle_event(event)
+
 
 
 
 def init():
     global main_character
-    global background
+    global background_1_1,background_1_2,background_1_3, background_2_1,background_2_2,background_2_3, background_3_1,background_3_2,background_3_3, background_4_1,background_4_2,background_4_3, background_5_1,background_5_2,background_5_3
 
     main_character = Character()
-    game_world.add_object(main_character, 2)
+    game_world.add_object(main_character, 5)
 
-    background = BackGround()
-    game_world.add_object(background,0)
+    background_1_1 = BackGround(0,1)
+    background_1_2 = BackGround(0, 2)
+    background_1_3 = BackGround(0, 3)
+
+    background_1_1.prevImage = background_1_3
+    background_1_2.prevImage = background_1_1
+    background_1_3.prevImage = background_1_2
+
+    background_2_1 = BackGround(1, 1)
+    background_2_2 = BackGround(1, 2)
+    background_2_3 = BackGround(1, 3)
+
+    background_2_1.prevImage = background_2_3
+    background_2_2.prevImage = background_2_1
+    background_2_3.prevImage = background_2_2
+
+    background_3_1 = BackGround(2, 1)
+    background_3_2 = BackGround(2, 2)
+    background_3_3 = BackGround(2, 3)
+
+
+    background_3_1.prevImage = background_3_3
+    background_3_2.prevImage = background_3_1
+    background_3_3.prevImage = background_3_2
+
+    background_4_1 = BackGround(3, 1)
+    background_4_2 = BackGround(3, 2)
+    background_4_3 = BackGround(3, 3)
+
+
+    background_4_1.prevImage = background_4_3
+    background_4_2.prevImage = background_4_1
+    background_4_3.prevImage = background_4_2
+
+    background_5_1 = BackGround(4, 1)
+    background_5_2 = BackGround(4, 2)
+    background_5_3 = BackGround(4, 3)
+
+
+    background_5_1.prevImage = background_5_3
+    background_5_2.prevImage = background_5_1
+    background_5_3.prevImage = background_5_2
+
+
+
+    game_world.add_objects([background_1_1,background_1_2,background_1_3],0)
+    game_world.add_objects([background_2_1, background_2_2, background_2_3], 1)
+    game_world.add_objects([background_3_1, background_3_2, background_3_3], 2)
+    game_world.add_objects([background_4_1, background_4_2, background_4_3], 3)
+    game_world.add_objects([background_5_1, background_5_2, background_5_3], 4)
+
 
 
 

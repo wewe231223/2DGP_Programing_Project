@@ -4,6 +4,7 @@ from pico2d import load_image, draw_rectangle , get_canvas_width , get_canvas_he
 from random import randint
 import random
 
+import Timer
 from input_event_functions import *
 
 def CreateVelocity():
@@ -29,16 +30,27 @@ class Idle:
 
     @staticmethod
     def exit(background,event):
-        pass
+        background.acceleration = 1
+
 
     @staticmethod
     def do(background):
+        background.velocity += background.acceleration * Timer.delta_time
+        clamp(0.0,background.velocity,100.0)
+
+
+        if background.x < -get_canvas_width() / 2:
+            background.x = background.prevImage.x + get_canvas_width() - background.velocity
+        else:
+            background.x -= background.velocity
         pass
 
 
     @staticmethod
     def draw(background):
         background.image.draw(background.x, background.y, get_canvas_width(),get_canvas_height())
+        if background.bb_y:
+            draw_rectangle(*background.get_bb())
 
 
 class Scroll:
@@ -49,10 +61,14 @@ class Scroll:
 
     @staticmethod
     def exit(background, event):
-        pass
+        background.acceleration = -1
 
     @staticmethod
     def do(background):
+
+        background.velocity += background.acceleration * Timer.delta_time
+        clamp(0.0,background.velocity,background.velocity)
+
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
         else:
@@ -63,6 +79,8 @@ class Scroll:
     @staticmethod
     def draw(background):
         background.image.draw(background.x, background.y, get_canvas_width(), get_canvas_height())
+        if background.bb_y:
+            draw_rectangle(*background.get_bb())
 
 
 class BackGround_Statemachine:
@@ -101,8 +119,9 @@ class BackGround:
         self.image = load_image("./Resources/BackGround_1/" + "%d" % (5 - depth) + ".png")
         self.x = (get_canvas_width() / 2) * (position * 2 - 1)
         self.y = get_canvas_height() / 2
-        self.velocity = BackSpeed[depth]
-        
+        self.max_velocity = BackSpeed[depth]
+        self.velocity = 0.0
+        self.acceleration = 0.0
         self.prevImage = None
         self.bb_y = None
         self.statemachine = BackGround_Statemachine(self)

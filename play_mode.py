@@ -76,11 +76,19 @@ def init():
 
 
 
-    game_world.add_objects([background_1_1,background_1_2,background_1_3],0)
+    game_world.add_objects([background_1_1, background_1_2, background_1_3], 0)
     game_world.add_objects([background_2_1, background_2_2, background_2_3], 1)
     game_world.add_objects([background_3_1, background_3_2, background_3_3], 2)
     game_world.add_objects([background_4_1, background_4_2, background_4_3], 3)
     game_world.add_objects([background_5_1, background_5_2, background_5_3], 4)
+
+
+    game_world.add_collision_pair("Ground_Character",main_character,None)
+
+    game_world.add_collision_pair("Ground_Character", None,         background_5_1)
+    game_world.add_collision_pair("Ground_Character", None,         background_5_2)
+    game_world.add_collision_pair("Ground_Character", None,         background_5_3)
+
 
 
 
@@ -93,6 +101,9 @@ def finish():
 
 def update():
     game_world.update()
+    game_world.handle_collisions()
+
+
 
 
 def draw():

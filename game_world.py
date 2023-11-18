@@ -29,8 +29,8 @@ def collide(a,b):
 
     if left_a > right_b: return False
     if right_a < left_b: return False
-    if top_a > bottom_b: return False
-    if bottom_a >  top_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
 
     return True
 
@@ -49,12 +49,12 @@ def handle_collisions():
         for a in pairs[0]:
             for b in pairs[1]:
                 if collide(a, b):
-                    a.handle_collision(group,a)
-                    b.handle_collision(group,b)
+                    a.handle_collision(group, a)
+                    b.handle_collision(group, b)
 
 
 
 def handle_event(event):
     for layer in objects:
         for object in layer:
-            object.handle_event(event);
+            object.handle_event(event)

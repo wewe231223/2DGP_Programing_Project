@@ -20,4 +20,5 @@ def space_up(e):
 def end(e):
     return e[0] == 'ANIMATION_END'
 
-
+def landing(e):
+    return e[0] == "LANDED"

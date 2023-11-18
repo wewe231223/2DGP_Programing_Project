@@ -79,11 +79,11 @@ class Jump:
 
     @staticmethod
     def exit(ch, e):
-        pass
+        ch.frame = 0
 
     @staticmethod
     def do(ch):
-        pass 
+        pass
     @staticmethod
     def draw(ch):
         ch.image.clip_draw( int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300 )
@@ -100,7 +100,7 @@ class ReadyJump:
 
     @staticmethod
     def exit(character,event):
-        pass
+        character.y = 200
 
     @staticmethod
     def do(character):
@@ -129,7 +129,7 @@ class Character_StateMachine:
             Idle: {right_down : Forward, space_down : ReadyJump},
             Forward: {right_up : Idle, space_down : ReadyJump},
             ReadyJump: {end: Jump},
-            Jump: {end: Idle}
+            Jump: {landing: Idle}
         }
 
 
@@ -192,7 +192,7 @@ class Character:
 
     def handle_collision(self,group,other):
         self.y -= self.delta_y
-
+        self.statemachine.handle_event(("LANDED",0))
         pass
 
     def get_bb(self):

@@ -75,8 +75,6 @@ class Forward:
 class Jump:
     @staticmethod
     def enter(ch, e):
-        ch.action = "JUMP"
-        ch.y = 200
         pass
 
     @staticmethod
@@ -85,20 +83,20 @@ class Jump:
 
     @staticmethod
     def do(ch):
-        if int(ch.frame) == Behavior_Frame[ch.action] - 1:
-            ch.statemachine.handle_event(("ANIMATION_END",0))
-        else :
-            ch.frame = (ch.frame + Behavior_Frame[ch.action] * ACTION_PER_TIME * 0.5 * Timer.delta_time) % Behavior_Frame[ch.action]
-
+        pass 
     @staticmethod
     def draw(ch):
         ch.image.clip_draw( int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300 )
+
+
 
 class ReadyJump:
 
     @staticmethod
     def enter(character,event):
-        pass
+        character.frame = 0
+        character.action = "JUMP"
+
 
     @staticmethod
     def exit(character,event):
@@ -106,13 +104,19 @@ class ReadyJump:
 
     @staticmethod
     def do(character):
-        pass
+        if int(character.frame) == Behavior_Frame[character.action] - 1:
+            character.statemachine.handle_event(("ANIMATION_END",0))
+        else :
+            character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
+
 
     @staticmethod
     def draw(character):
+        character.image.clip_draw( int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
+
         pass
 
-    
+
 
 
 
@@ -122,8 +126,9 @@ class Character_StateMachine:
         self.character = character
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down : Forward, space_down : Jump},
-            Forward: {right_up : Idle, space_down : Jump},
+            Idle: {right_down : Forward, space_down : ReadyJump},
+            Forward: {right_up : Idle, space_down : ReadyJump},
+            ReadyJump: {end: Jump},
             Jump: {end: Idle}
         }
 

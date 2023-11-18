@@ -12,7 +12,7 @@ def CreateVelocity():
     result.sort()
     floatresult = []
     for i in result:
-        floatresult.append( float(i) / 10.0 )
+        floatresult.append( float(i) / 1000.0 )
 
     print(floatresult)
     return floatresult
@@ -139,7 +139,7 @@ class BackGround:
 
     def get_bb(self):
         if self.bb_y:
-            return self.x - get_canvas_width() / 2 , self.bb_y - 30, self.x + get_canvas_width() / 2 , self.bb_y + 30
+            return self.x - get_canvas_width() / 2, 0, self.x + get_canvas_width() / 2, 50
         else: return None
 
 

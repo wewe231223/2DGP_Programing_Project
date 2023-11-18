@@ -8,6 +8,9 @@ CHARACTER_TIME_PER_ACTION = 0.7
 ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
 
 
+
+
+
 Behavior_Frame = {
  "DEAD": 4,
  "LINK_DEAD": 1,
@@ -73,6 +76,7 @@ class Jump:
     @staticmethod
     def enter(ch, e):
         ch.action = "JUMP"
+        ch.y = 200
         pass
 
     @staticmethod
@@ -81,15 +85,36 @@ class Jump:
 
     @staticmethod
     def do(ch):
-        
         if int(ch.frame) == Behavior_Frame[ch.action] - 1:
             ch.statemachine.handle_event(("ANIMATION_END",0))
         else :
-            ch.frame = (ch.frame + Behavior_Frame[ch.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[ch.action]
+            ch.frame = (ch.frame + Behavior_Frame[ch.action] * ACTION_PER_TIME * 0.5 * Timer.delta_time) % Behavior_Frame[ch.action]
 
     @staticmethod
     def draw(ch):
-        ch.image.clip_draw(int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300)
+        ch.image.clip_draw( int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300 )
+
+class ReadyJump:
+
+    @staticmethod
+    def enter(character,event):
+        pass
+
+    @staticmethod
+    def exit(character,event):
+        pass
+
+    @staticmethod
+    def do(character):
+        pass
+
+    @staticmethod
+    def draw(character):
+        pass
+
+    
+
+
 
 class Character_StateMachine:
 
@@ -98,7 +123,7 @@ class Character_StateMachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down : Forward, space_down : Jump},
-            Forward: {right_up : Idle},
+            Forward: {right_up : Idle, space_down : Jump},
             Jump: {end: Idle}
         }
 
@@ -124,6 +149,7 @@ class Character_StateMachine:
 
 
 
+
 class Character:
     def __init__(self):
         self.image = load_image("Resources/character_animations.png")
@@ -139,22 +165,29 @@ class Character:
         self.statemachine.start()
 
 
+        self.delta_y = 0
 
 
     def render(self):
         self.statemachine.draw()
         draw_rectangle(*self.get_bb())
+
+
  #       self.test.clip_draw(0,144 * self.testx,144,144,100,100)
 
     def update(self):
         self.statemachine.update()
-        if self.y > 100: self.y -= 1
+        self.delta_y = -1
+        self.y += self.delta_y
+
+
 
     def handle_event(self,event):
         self.statemachine.handle_event(("INPUT",event))
 
     def handle_collision(self,group,other):
-        
+        self.y -= self.delta_y
+
         pass
 
     def get_bb(self):

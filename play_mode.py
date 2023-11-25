@@ -1,10 +1,11 @@
 from pico2d import *
 
-import Game
+import game_framework
 import game_world
 
 from Character import Character
 from BackGround import BackGround
+import server
 import random
 
 
@@ -13,10 +14,10 @@ def handle_events():
 
     for event in events:
         if event.type == SDL_QUIT:
-            Game.quit()
+            game_framework.quit()
 
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            Game.quit()
+            game_framework.quit()
 
         else:
             game_world.handle_event(event)
@@ -25,11 +26,11 @@ def handle_events():
 
 
 def init():
-    global main_character
+
     global background_1_1,background_1_2,background_1_3, background_2_1,background_2_2,background_2_3, background_3_1,background_3_2,background_3_3, background_4_1,background_4_2,background_4_3, background_5_1,background_5_2,background_5_3
 
-    main_character = Character()
-    game_world.add_object(main_character, 5)
+    server.MainCharacter = Character()
+    game_world.add_object(server.Maincharacter, 5)
 
     background_1_1 = BackGround(0,1)
     background_1_2 = BackGround(0, 2)
@@ -83,7 +84,7 @@ def init():
     game_world.add_objects([background_5_1, background_5_2, background_5_3], 4)
 
 
-    game_world.add_collision_pair("Ground_Character",main_character,None)
+    game_world.add_collision_pair("Ground_Character",server.Maincharacter,None)
 
     game_world.add_collision_pair("Ground_Character", None,         background_5_1)
     game_world.add_collision_pair("Ground_Character", None,         background_5_2)

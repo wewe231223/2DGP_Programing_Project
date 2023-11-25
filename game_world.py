@@ -1,6 +1,6 @@
 objects = [[] for _ in range(6)]
 collision_pairs = {}
-
+import server
 
 
 def add_object(object,depth = 0):
@@ -14,13 +14,15 @@ def add_objects(objectlist, depth = 0):
 def update():
     for layer in objects:
         for o in layer:
-            o.update()
+            if o is not None:
+                o.update()
 
 
 def render():
     for layer in objects:
         for o in layer:
-            o.render()
+            if o is not None:
+                o.render()
 
 
 def collide(a,b):
@@ -57,4 +59,5 @@ def handle_collisions():
 def handle_event(event):
     for layer in objects:
         for object in layer:
-            object.handle_event(event)
+            if object is not None :
+                object.handle_event(event)

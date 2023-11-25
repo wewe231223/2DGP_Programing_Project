@@ -8,3 +8,8 @@ __pycache__/Game.cpython-311.pyc
 .idea/misc.xml
 *.pyc
 *.xml
+*.pyc
+__pycache__/BackGround.cpython-38.pyc
+__pycache__/Character.cpython-38.pyc
+__pycache__/Game.cpython-38.pyc
+*.pyc

@@ -1,25 +1,20 @@
 import math
+from sys import float_info
 
 from pico2d import load_image, draw_rectangle , get_canvas_width , get_canvas_height
-from random import randint
 import random
 
 import Timer
 from input_event_functions import *
 
-def CreateVelocity():
-    result = random.sample(range(1, 100), 5)
-    result.sort()
-    floatresult = []
-    for i in result:
-        floatresult.append( float(i) / 1000.0 )
 
-    print(floatresult)
-    return floatresult
+MAX_VELOCITY = 13.0
+Scroll_speed = [0.1,0.2,0.4,0.8,1.6]
+Scroll_max_speed = [3,6,12,18,25]
 
 
-BackSpeed = CreateVelocity()
-
+DeScroll_speed = Scroll_speed.copy()
+DeScroll_speed.reverse()
 
 
 class Idle:
@@ -31,13 +26,14 @@ class Idle:
 
     @staticmethod
     def exit(background,event):
-        background.acceleration = 1
+        background.acceleration = Scroll_speed[background.depth]
 
 
     @staticmethod
     def do(background):
-        background.velocity += background.acceleration * Timer.delta_time
-        if background.velocity <= 0.0 : background.velocity = 0.0
+        background.velocity *= 0.999
+        if background.velocity < float_info.epsilon:
+            background.velocity = 0.0
 
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
@@ -57,17 +53,18 @@ class Scroll:
 
     @staticmethod
     def enter(background, event):
+        background.velocity += Scroll_speed[background.depth]
         pass
 
     @staticmethod
     def exit(background, event):
-        background.acceleration = -1
+        background.acceleration = -5
+
 
     @staticmethod
     def do(background):
-
-        background.velocity += background.acceleration * Timer.delta_time
-        clamp(0.0,background.velocity,background.velocity)
+        if  background.velocity < Scroll_max_speed[background.depth]:
+            background.velocity *= 1.001
 
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
@@ -119,9 +116,11 @@ class BackGround:
         self.image = load_image("./Resources/BackGround_1/" + "%d" % (5 - depth) + ".png")
         self.x = (get_canvas_width() / 2) * (position * 2 - 1)
         self.y = get_canvas_height() / 2
-        self.max_velocity = BackSpeed[depth]
+        self.max_velocity = Scroll_speed[depth]
+        print(self.max_velocity)
         self.velocity = 0.0
         self.acceleration = 0.0
+        self.depth = depth
         self.prevImage = None
         self.bb_y = None
         self.statemachine = BackGround_Statemachine(self)
@@ -132,10 +131,12 @@ class BackGround:
 
     def render(self):
         self.statemachine.draw()
+        print(self.velocity)
 
 
     def update(self):
         self.statemachine.update()
+
 
     def get_bb(self):
         if self.bb_y:

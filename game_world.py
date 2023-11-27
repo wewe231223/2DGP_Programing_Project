@@ -21,8 +21,7 @@ def update():
 def render():
     for layer in objects:
         for o in layer:
-            if o is not None:
-                o.render()
+            o.render()
 
 
 def collide(a,b):
@@ -59,5 +58,4 @@ def handle_collisions():
 def handle_event(event):
     for layer in objects:
         for object in layer:
-            if object is not None :
-                object.handle_event(event)
+            object.handle_event(event)

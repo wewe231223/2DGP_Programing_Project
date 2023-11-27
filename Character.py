@@ -7,6 +7,8 @@ from input_event_functions import *
 CHARACTER_TIME_PER_ACTION = 0.7
 ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
 
+# 150 pixel = 0.75m
+
 
 
 

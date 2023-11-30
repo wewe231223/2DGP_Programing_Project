@@ -12,9 +12,17 @@ MAX_VELOCITY = 13.0
 Scroll_speed = [0.1,0.2,0.4,0.8,1.6]
 Scroll_max_speed = [3,6,9,12,13]
 
+BACKGROUND_STOPWATCH_ID = 2
 
-DeScroll_speed = Scroll_speed.copy()
-DeScroll_speed.reverse()
+
+
+# Character Run Speed
+PIXEL_PER_METER = (1920.0 / 50.0)  # 10 pixel 30 cm
+RUN_SPEED_KMPH = 40.0  # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
 
 
 class Idle:
@@ -67,6 +75,7 @@ class Scroll:
 
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
+            Timer.
         else:
             background.x -= background.velocity
 

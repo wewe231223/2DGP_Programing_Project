@@ -10,6 +10,9 @@ ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
 # 150 pixel = 0.75m
 
 
+CHARACTER_STOPWATCH_ID = 1
+
+
 
 
 
@@ -78,7 +81,6 @@ class Jump:
     @staticmethod
     def enter(character, e):
         character.frame = 1
-        character.Y_Acceleration = 5.0
 
 
     @staticmethod
@@ -107,14 +109,18 @@ class ReadyJump:
     def enter(character,event):
         character.frame = 0
         character.action = "JUMP"
-
+        Timer.Start_Watch(CHARACTER_STOPWATCH_ID)
+        print("Charge")
 
     @staticmethod
     def exit(character,event):
+        character.Y_Acceleration =       clamp(0.0,Timer.Get_Elapsed(CHARACTER_STOPWATCH_ID) * 7,9.0)
+
         pass
 
     @staticmethod
     def do(character):
+        print("Charging...")
         if int(character.frame) == 1:
             character.statemachine.handle_event(("ANIMATION_END",0))
         else :
@@ -180,7 +186,7 @@ class Character:
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
         self.Y_Acceleration = 0.0
-
+        self.heart = 5
 
         self.delta_y = 0
 

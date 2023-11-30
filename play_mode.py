@@ -7,6 +7,8 @@ from Character import Character
 from BackGround import BackGround
 import server
 from Obastcle import Obstacle
+from ui import UI
+
 
 import util
 
@@ -33,6 +35,7 @@ def init():
 
 
     game_world.add_object(Obstacle(),5)
+    game_world.add_object(UI(),5)
 
     server.Maincharacter = Character()
     game_world.add_object(server.Maincharacter, 5)

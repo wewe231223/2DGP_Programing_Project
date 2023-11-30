@@ -12,7 +12,7 @@ ACTION_PER_TIME =1.0 / CHARACTER_TIME_PER_ACTION
 
 
 CHARACTER_STOPWATCH_ID = 1
-
+CHARACTER_INVINCIBLE_TIME = 2.0
 
 
 
@@ -186,6 +186,7 @@ class Character_StateMachine:
         return False
 
     def draw(self):
+        self.character.image.opacify(self.character.opacity)
         self.cur_state.draw(self.character)
 
 
@@ -206,8 +207,13 @@ class Character:
         self.statemachine.start()
         self.Y_Acceleration = 0.0
         self.heart = 5
-
         self.delta_y = 0
+
+
+
+        self.opacity = 1.0
+        self.invincible_counter = 0.0
+
 
 
     def render(self):
@@ -221,22 +227,33 @@ class Character:
         self.statemachine.update()
         self.delta_y = -1
         self.y += self.delta_y
-
+        if self.opacity == 0.5:
+            self.invincible_counter += Timer.delta_time
+        if self.invincible_counter > CHARACTER_INVINCIBLE_TIME:
+            self.disinvincible()
 
 
     def handle_event(self,event):
         self.statemachine.handle_event(("INPUT",event))
 
     def handle_collision(self,group,other):
-        self.y -= self.delta_y
 
 
         if(group == 'Ground_Character'):
+            self.y -= self.delta_y
             self.Y_Acceleration = 0.0
-
-
-        self.statemachine.handle_event(("LANDED",0))
-        pass
+            self.statemachine.handle_event(("LANDED",0))
+        if(group == "Obstacle_Character"):
+            if self.opacity == 1.0:
+                self.heart -= 1
+                self.invincible()
 
     def get_bb(self):
         return self.x - 40, self.y -self.bb_y, self.x + 40, self.y + self.bb_y
+
+    def invincible(self):
+        self.opacity = 0.5
+
+    def disinvincible(self):
+        self.opacity = 1.0
+        self.invincible_counter = 0.0

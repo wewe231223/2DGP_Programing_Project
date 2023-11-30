@@ -22,6 +22,8 @@ def update():
     prev_time += delta_time
 
 
+
+
 def Start_Watch(id):
 
     # 아직 등록되지 않은 경우
@@ -34,3 +36,5 @@ def Start_Watch(id):
 
 def Get_Elapsed(id):
     return time.time() - Watch[id-1     ]
+
+

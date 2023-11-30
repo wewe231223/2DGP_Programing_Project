@@ -33,6 +33,7 @@ class Obstacle:
 
         if self.x < -10:
             game_world.remove_object(self)
+            game_world.remove_collision_object(self)
 
     def handle_event(self,event):
         pass

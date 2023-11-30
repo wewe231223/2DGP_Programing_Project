@@ -6,7 +6,7 @@ import game_world
 from Character import Character
 from BackGround import BackGround
 import server
-from Obastcle import Obstacle
+from Obastcle import Obstacle as obstacle
 from ui import UI
 
 
@@ -35,7 +35,6 @@ def init():
     global background_1_1,background_1_2,background_1_3, background_2_1,background_2_2,background_2_3, background_3_1,background_3_2,background_3_3, background_4_1,background_4_2,background_4_3, background_5_1,background_5_2,background_5_3
 
 
-    game_world.add_object(Obstacle(),5)
     game_world.add_object(UI(),5)
 
     server.Maincharacter = Character()
@@ -108,6 +107,7 @@ def init():
 
 
 
+    game_world.add_collision_pair("Obstacle_Character",server.Maincharacter,None)
 
 
 
@@ -118,7 +118,11 @@ def finish():
 
 def update():
     if util.random_percent(0.001):
-        game_world.add_object(Obstacle(),5)
+
+        Ob = obstacle()
+        game_world.add_object(Ob,5)
+        game_world.add_collision_pair("Obstacle_Character",None,Ob)
+
 
 
 

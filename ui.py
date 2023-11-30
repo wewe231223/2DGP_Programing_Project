@@ -2,7 +2,7 @@
 from pico2d import load_image, load_font
 import server
 
-KMPH = 180.0
+KMPH = 0.0
 
 class UI:
     image_loaded = False
@@ -25,7 +25,7 @@ class UI:
 
         layoutx = 60
         layouty = 60
-
+        print(character_heart)
         for hp in range(character_heart):
             self.heartimg.draw(1920 - layoutx,1080 - layouty)
             layoutx += 80

@@ -8,7 +8,7 @@ from BackGround import BackGround
 import server
 from Obastcle import Obstacle
 
-import random
+import util
 
 
 def handle_events():
@@ -111,6 +111,9 @@ def finish():
 
 
 def update():
+    if util.random_percent(0.001):
+        game_world.add_object(Obstacle(),5)
+
     game_world.update()
     game_world.handle_collisions()
 

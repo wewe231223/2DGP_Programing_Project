@@ -76,16 +76,18 @@ class Forward:
 
 class Jump:
     @staticmethod
-    def enter(ch, e):
-        pass
+    def enter(character, e):
+        character.frame = 1
 
     @staticmethod
     def exit(ch, e):
         ch.frame = 0
 
     @staticmethod
-    def do(ch):
-        pass
+    def do(character):
+        if int(character.frame) < 6:
+            character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
+
     @staticmethod
     def draw(ch):
         ch.image.clip_draw( int(ch.frame) * ch.width, ch.width * Behavior_Action[ch.action], ch.width, ch.width, ch.x, ch.y, 300, 300 )
@@ -106,7 +108,7 @@ class ReadyJump:
 
     @staticmethod
     def do(character):
-        if int(character.frame) == Behavior_Frame[character.action] - 1:
+        if int(character.frame) == 1:
             character.statemachine.handle_event(("ANIMATION_END",0))
         else :
             character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
@@ -130,7 +132,7 @@ class Character_StateMachine:
         self.transitions = {
             Idle: {right_down : Forward, space_down : ReadyJump},
             Forward: {right_up : Idle, space_down : ReadyJump},
-            ReadyJump: {end: Jump},
+            ReadyJump: {space_up: Jump},
             Jump: {landing: Idle}
         }
 

@@ -10,7 +10,7 @@ from input_event_functions import *
 
 MAX_VELOCITY = 13.0
 Scroll_speed = [0.1,0.2,0.4,0.8,1.6]
-Scroll_max_speed = [3,6,12,18,25]
+Scroll_max_speed = [3,6,9,12,13]
 
 
 DeScroll_speed = Scroll_speed.copy()
@@ -26,8 +26,7 @@ class Idle:
 
     @staticmethod
     def exit(background,event):
-        background.acceleration = Scroll_speed[background.depth]
-
+        pass
 
     @staticmethod
     def do(background):
@@ -53,18 +52,18 @@ class Scroll:
 
     @staticmethod
     def enter(background, event):
-        background.velocity += Scroll_speed[background.depth]
         pass
 
     @staticmethod
     def exit(background, event):
-        background.acceleration = -5
-
+        pass
 
     @staticmethod
     def do(background):
         if  background.velocity < Scroll_max_speed[background.depth]:
             background.velocity *= 1.001
+
+
 
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
@@ -94,6 +93,7 @@ class BackGround_Statemachine:
 
     def update(self):
         self.cur_state.do(self.Back)
+        print(self.Back.velocity);
 
     def handle_event(self,e):
         for check_event, next_state in self.transitions[self.cur_state].items():
@@ -116,10 +116,7 @@ class BackGround:
         self.image = load_image("./Resources/BackGround_1/" + "%d" % (5 - depth) + ".png")
         self.x = (get_canvas_width() / 2) * (position * 2 - 1)
         self.y = get_canvas_height() / 2
-        self.max_velocity = Scroll_speed[depth]
-        print(self.max_velocity)
-        self.velocity = 0.0
-        self.acceleration = 0.0
+        self.velocity = Scroll_speed[depth]
         self.depth = depth
         self.prevImage = None
         self.bb_y = None

@@ -5,7 +5,10 @@ from pico2d import load_image, draw_rectangle , get_canvas_width , get_canvas_he
 import random
 
 import Timer
+import server
+import ui
 from input_event_functions import *
+from ui import *
 
 
 MAX_VELOCITY = 13.0
@@ -55,6 +58,35 @@ class Idle:
         if background.bb_y:
             draw_rectangle(*background.get_bb())
 
+class Jump:
+
+    @staticmethod
+    def enter(background,event):
+        pass
+
+
+    @staticmethod
+    def exit(background,event):
+        pass
+
+    @staticmethod
+    def do(background):
+        background.velocity *= 0.999
+        if background.velocity < float_info.epsilon:
+            background.velocity = 0.0
+
+        if background.x < -get_canvas_width() / 2:
+            background.x = background.prevImage.x + get_canvas_width() - background.velocity
+        else:
+            background.x -= background.velocity
+        pass
+
+
+    @staticmethod
+    def draw(background):
+        background.image.draw(background.x, background.y, get_canvas_width(),get_canvas_height())
+        if background.bb_y:
+            draw_rectangle(*background.get_bb())
 
 class Scroll:
 
@@ -68,14 +100,22 @@ class Scroll:
 
     @staticmethod
     def do(background):
-        if  background.velocity < Scroll_max_speed[background.depth]:
+        if  background.velocity < Scroll_max_speed[background.depth] :
             background.velocity *= 1.001
 
 
 
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
-            Timer.
+
+            if background.depth == 4 :
+                elapsed = Timer.Get_Elapsed(BACKGROUND_STOPWATCH_ID)
+                ui.KMPH = 50 * 3.6 / elapsed
+                Timer.Start_Watch(BACKGROUND_STOPWATCH_ID)
+
+
+
+
         else:
             background.x -= background.velocity
 
@@ -94,7 +134,8 @@ class BackGround_Statemachine:
         self.cur_state = Idle
         self.transitions = {
             Idle: {right_down : Scroll},
-            Scroll: {right_up : Idle}
+            Scroll: {right_up : Idle, jumped : Jump},
+            Jump: {right_down : Scroll, idle : Idle}
         }
 
     def start(self):
@@ -129,7 +170,7 @@ class BackGround:
         self.prevImage = None
         self.bb_y = None
         self.statemachine = BackGround_Statemachine(self)
-
+        Timer.Start_Watch(BACKGROUND_STOPWATCH_ID)
         if depth == 4:
             self.bb_y = 20
 

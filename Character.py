@@ -1,6 +1,7 @@
 from pico2d import *
 
 import Timer
+import server
 
 from input_event_functions import *
 
@@ -87,6 +88,7 @@ class Jump:
     def exit(ch, e):
         ch.frame = 0
 
+
     @staticmethod
     def do(character):
         if int(character.frame) < 6:
@@ -133,7 +135,23 @@ class ReadyJump:
 
         pass
 
+class land:
 
+    @staticmethod
+    def enter(character,event):
+        pass
+
+    @staticmethod
+    def exit(character, event):
+        pass
+
+    @staticmethod
+    def do(character):
+        pass
+
+    @staticmethod
+    def draw(character):
+        character.image.clip_draw( int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
 
 
 
@@ -146,7 +164,8 @@ class Character_StateMachine:
             Idle: {right_down : Forward, space_down : ReadyJump},
             Forward: {right_up : Idle, space_down : ReadyJump},
             ReadyJump: {space_up: Jump},
-            Jump: {landing: Idle}
+            Jump: {landing: land},
+            land: {right_down : Forward, right_not_donw : Idle}
         }
 
 

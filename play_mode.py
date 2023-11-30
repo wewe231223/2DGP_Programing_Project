@@ -16,6 +16,7 @@ import util
 def handle_events():
     events = get_events()
 
+
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
@@ -83,6 +84,8 @@ def init():
     server.GroundSample = background_5_1
 
 
+  #  print(f'back1 {background_5_1.__str__()}    back2 {background_5_2.__str__()}       back3 {background_5_3.__str__()}')
+
 
     background_5_1.prevImage = background_5_3
     background_5_2.prevImage = background_5_1
@@ -116,6 +119,8 @@ def finish():
 def update():
     if util.random_percent(0.001):
         game_world.add_object(Obstacle(),5)
+
+
 
     game_world.update()
     game_world.handle_collisions()

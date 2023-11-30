@@ -30,7 +30,8 @@ def init():
 
     global background_1_1,background_1_2,background_1_3, background_2_1,background_2_2,background_2_3, background_3_1,background_3_2,background_3_3, background_4_1,background_4_2,background_4_3, background_5_1,background_5_2,background_5_3
 
-    game_world.add_object(Tilemap(2,3),5)
+    game_world.add_object(Tilemap(3,3,500,500),5)
+    game_world.add_object(Tilemap(6,1,500,594),5)
 
     server.Maincharacter = Character()
     game_world.add_object(server.Maincharacter, 5)

@@ -131,7 +131,6 @@ class BackGround:
 
     def render(self):
         self.statemachine.draw()
-        print(self.velocity)
 
 
     def update(self):

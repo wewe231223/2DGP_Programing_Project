@@ -1,7 +1,9 @@
 from pico2d import *
 
 import Timer
+import game_framework
 import server
+import gameover_mode
 
 from input_event_functions import *
 
@@ -140,7 +142,6 @@ class land:
     @staticmethod
     def enter(character,event):
         pass
-
     @staticmethod
     def exit(character, event):
         pass
@@ -153,6 +154,31 @@ class land:
     def draw(character):
         character.image.clip_draw( int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
 
+class Dead:
+
+    @staticmethod
+    def enter(character,event):
+        character.action = "COLLIDE"
+
+
+    @staticmethod
+    def exit(character, event):
+        pass
+
+    @staticmethod
+    def do(character):
+        if int(character.frame) == Behavior_Frame[character.action] - 1:
+            game_framework.change_mode(gameover_mode)
+        else :
+            character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
+
+
+    @staticmethod
+    def draw(character):
+        character.image.clip_draw( int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
+
+
+
 
 
 class Character_StateMachine:
@@ -161,11 +187,12 @@ class Character_StateMachine:
         self.character = character
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down : Forward, space_down : ReadyJump},
-            Forward: {right_up : Idle, space_down : ReadyJump},
-            ReadyJump: {space_up: Jump},
-            Jump: {landing: land},
-            land: {right_down : Forward, right_not_donw : Idle}
+            Idle: {right_down : Forward, space_down : ReadyJump, dead : Dead},
+            Forward: {right_up : Idle, space_down : ReadyJump,dead : Dead},
+            ReadyJump: {space_up: Jump,dead : Dead},
+            Jump: {landing: land,dead : Dead},
+            land: {right_down : Forward, right_not_donw : Idle,dead : Dead},
+            Dead:{},
         }
 
 
@@ -206,7 +233,7 @@ class Character:
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
         self.Y_Acceleration = 0.0
-        self.heart = 5
+        self.heart = 1
         self.delta_y = 0
 
 
@@ -231,6 +258,8 @@ class Character:
             self.invincible_counter += Timer.delta_time
         if self.invincible_counter > CHARACTER_INVINCIBLE_TIME:
             self.disinvincible()
+        if self.heart == 0:
+            self.statemachine.handle_event(("DEAD",0))
 
 
     def handle_event(self,event):

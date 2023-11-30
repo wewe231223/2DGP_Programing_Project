@@ -32,3 +32,6 @@ def jumped(e):
 
 def idle(e):
     return True
+
+def dead(e):
+    return e[0] == "DEAD"

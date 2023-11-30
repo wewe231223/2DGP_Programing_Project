@@ -93,7 +93,6 @@ class BackGround_Statemachine:
 
     def update(self):
         self.cur_state.do(self.Back)
-        print(self.Back.velocity);
 
     def handle_event(self,e):
         for check_event, next_state in self.transitions[self.cur_state].items():

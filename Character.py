@@ -78,6 +78,8 @@ class Jump:
     @staticmethod
     def enter(character, e):
         character.frame = 1
+        character.Y_Acceleration = 5.0
+
 
     @staticmethod
     def exit(ch, e):
@@ -87,6 +89,11 @@ class Jump:
     def do(character):
         if int(character.frame) < 6:
             character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
+
+        if character.Y_Acceleration > 0.0:
+            character.Y_Acceleration -= 9.8 * Timer.delta_time
+            character.y += character.Y_Acceleration
+            print(character.Y_Acceleration)
 
     @staticmethod
     def draw(ch):
@@ -104,7 +111,7 @@ class ReadyJump:
 
     @staticmethod
     def exit(character,event):
-        character.y = 200
+        pass
 
     @staticmethod
     def do(character):
@@ -172,6 +179,7 @@ class Character:
         self.bb_y = 40
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
+        self.Y_Acceleration = 0.0
 
 
         self.delta_y = 0
@@ -196,6 +204,12 @@ class Character:
 
     def handle_collision(self,group,other):
         self.y -= self.delta_y
+
+
+        if(group == 'Ground_Character'):
+            self.Y_Acceleration = 0.0
+
+
         self.statemachine.handle_event(("LANDED",0))
         pass
 

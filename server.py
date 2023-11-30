@@ -1,3 +1,4 @@
 
 Maincharacter = None
 
+GroundSample = None

@@ -13,6 +13,7 @@ from ui import UI
 import util
 from eagle import Eagle
 
+
 def handle_events():
     events = get_events()
 
@@ -32,13 +33,16 @@ def handle_events():
 
 def init():
     global background_1_1,background_1_2,background_1_3, background_2_1,background_2_2,background_2_3, background_3_1,background_3_2,background_3_3, background_4_1,background_4_2,background_4_3, background_5_1,background_5_2,background_5_3
+    global wind_sound
+    wind_sound = load_wav("./Resources/wind.wav")
+    wind_sound.repeat_play()
+
 
     server.ui_object = UI()
     game_world.add_object(server.ui_object,5)
 
 
     server.Maincharacter = Character()
-    game_world.add_object(Eagle(),5)
     game_world.add_object(server.Maincharacter, 5)
 
     background_1_1 = BackGround(0,1)
@@ -147,7 +151,7 @@ def update():
         game_world.add_object(Ob,5)
         game_world.add_collision_pair("Obstacle_Character",None,Ob)
 
-    if util.random_percent(0.001):
+    if util.random_percent(0.0001):
         ea = Eagle()
         game_world.add_object(ea,5)
         game_world.add_collision_pair("Eagle_Character",None,ea)

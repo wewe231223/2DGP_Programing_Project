@@ -90,6 +90,7 @@ class Scroll:
 
     @staticmethod
     def enter(background, event):
+
         pass
 
     @staticmethod
@@ -102,18 +103,21 @@ class Scroll:
             background.velocity *= 1.001
 
 
+
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
 
             if background.depth == 4 :
                 elapsed = Timer.Get_Elapsed(BACKGROUND_STOPWATCH_ID)
                 Timer.Start_Watch(BACKGROUND_STOPWATCH_ID)
+                server.Score += background.velocity / 3.0
 
 
 
 
         else:
             background.x -= background.velocity
+
 
 
 

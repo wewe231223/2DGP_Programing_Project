@@ -1,3 +1,4 @@
+import pico2d
 from pico2d import *
 
 import Timer
@@ -67,15 +68,19 @@ class Forward:
         ch.action = "BOOST"
         ch.y += 1
         ch.bb_y = 40
+        ch.slidesound = load_wav("./Resources/slide_snow.wav")
+        ch.slidesound.repeat_play()
         pass
 
     @staticmethod
     def exit(ch, e):
+        ch.slidesound = None
         pass
 
     @staticmethod
     def do(ch):
         ch.frame = (ch.frame+ Behavior_Frame[ch.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[ch.action]
+
 
     @staticmethod
     def draw(ch):
@@ -87,6 +92,7 @@ class Jump:
     def enter(character, e):
         character.frame = 1
         character.bb_y = 35
+        character.jumpsound.play(1)
 
 
     @staticmethod
@@ -117,6 +123,7 @@ class ReadyJump:
         character.bb_y = 40
         character.action = "JUMP"
         Timer.Start_Watch(CHARACTER_STOPWATCH_ID)
+
         print("Charge")
 
     @staticmethod
@@ -195,6 +202,8 @@ class Over:
 
     @staticmethod
     def enter(character,event):
+        character.opacity = 1.0
+        character.diesound.play(1)
         pass
 
     @staticmethod
@@ -268,6 +277,11 @@ class Character:
         self.Y_Acceleration = 0.0
         self.heart = 5
         self.delta_y = 0
+        self.slidesound = None
+        self.jumpsound = load_wav("./Resources/jump.wav")
+        self.damagesound = load_wav("./Resources/damage.wav")
+        self.diesound = load_wav("./Resources/die.wav")
+
 
 
 
@@ -278,7 +292,7 @@ class Character:
 
     def render(self):
         self.statemachine.draw()
-        draw_rectangle(*self.get_bb())
+        #draw_rectangle(*self.get_bb())
 
 
  #       self.test.clip_draw(0,144 * self.testx,144,144,100,100)
@@ -310,6 +324,7 @@ class Character:
             self.statemachine.handle_event(("LANDED",0))
         if(group == "Obstacle_Character" or group == "Eagle_Character"):
             if self.opacity == 1.0:
+                self.damagesound.play(1)
                 self.heart -= 1
                 self.invincible()
 

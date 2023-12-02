@@ -26,6 +26,7 @@ class UI:
     def render(self):
         self.render_heart()
         self.render_velocity()
+        self.render_score()
         if self.is_over:
             self.render_over()
 
@@ -38,6 +39,11 @@ class UI:
             self.heartimg.draw(1920 - layoutx,1080 - layouty)
             layoutx += 80
 
+
+    def render_score(self):
+        score = server.Score
+
+        self.font.draw(50,900,f'Score : { int(score)}')
 
     def render_velocity(self):
 

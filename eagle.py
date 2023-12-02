@@ -36,51 +36,6 @@ def image_pivot(frame):
 
     return s
 
-#
-# class HomingLaserHeader(pygame.sprite.Sprite):
-#     def __init__(self, sx, sy, tx, ty, rad, speed):
-#         pygame.sprite.Sprite.__init__(self)
-#         self.image = pygame.image.load(img_dir + "/img/homing_laser_01.png").convert_alpha()
-#         self.speed = 1
-#         self.max_speed = 8
-#         self.angle = math.atan2(ty - sy, tx - sx)
-#         self.rect = self.image.get_rect()
-#         self.rect.center = [sx, sy]
-#         self.dx = math.cos(self.angle) * self.speed
-#         self.dy = math.sin(self.angle) * self.speed
-#         self.x = sx
-#         self.y = sy
-#         self.tracking = True
-#
-#     def update(self, GameMain):
-#         if self.tracking:
-#             tx = GameMain.flight.rect.x
-#             ty = GameMain.flight.rect.y
-#             sx = self.rect.x
-#             sy = self.rect.y
-#             self.angle = math.atan2(ty - sy, tx - sx)
-#             self.dx = math.cos(self.angle) * self.speed
-#             self.dy = math.sin(self.angle) * self.speed
-#
-#             # 플레이어의 기체 x,y ±60 내로 접근 시, 추적을 멈춘다.
-#         if (self.rect.y > GameMain.flight.rect.y - 60 and \
-#             self.rect.y < GameMain.flight.rect.y + 60) and \
-#                 (self.rect.x > GameMain.flight.rect.x - 60 and \
-#                  self.rect.x < GameMain.flight.rect.x + 60):
-#             self.dx = math.cos(self.angle) * self.max_speed
-#             self.dy = math.sin(self.angle) * self.max_speed
-#             self.tracking = False
-#
-#         self.x += self.dx
-#         self.y += self.dy
-#         self.rect.centerx = int(self.x)
-#         self.rect.centery = int(self.y)
-#
-#         if self.max_speed > self.speed:
-#             self.speed += 0.3
-#
-
-
 
 def distance(a,b):
     return math.sqrt((b[0] - a[0])**2 + (b[1] - a[1])**2 )
@@ -146,6 +101,7 @@ class Eagle:
         pivot = image_pivot(self.frame)
         self.img.clip_draw(pivot,0,ImageSize[self.frame],50,self.x,self.y,200,200)
         draw_rectangle(*self.get_bb())
+
 
     def handle_event(self,event):
         pass

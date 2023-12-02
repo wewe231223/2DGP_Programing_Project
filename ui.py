@@ -12,6 +12,7 @@ class UI:
         if not UI.image_loaded:
             UI.heart_image = load_image('./Resources/heart pixel art 64x64.png')
             UI.Font = load_font('./Resources/Pixel.ttf',50)
+            UI.image_loaded = True
         self.heartimg = UI.heart_image
         self.font = UI.Font
         self.timeforoneblock = 180.0

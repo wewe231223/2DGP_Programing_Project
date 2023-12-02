@@ -266,7 +266,7 @@ class Character:
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
         self.Y_Acceleration = 0.0
-        self.heart = 1
+        self.heart = 5
         self.delta_y = 0
 
 
@@ -308,10 +308,12 @@ class Character:
             self.y -= self.delta_y
             self.Y_Acceleration = 0.0
             self.statemachine.handle_event(("LANDED",0))
-        if(group == "Obstacle_Character"):
+        if(group == "Obstacle_Character" or group == "Eagle_Character"):
             if self.opacity == 1.0:
                 self.heart -= 1
                 self.invincible()
+
+
 
     def get_bb(self):
         return self.x - 40, self.y -self.bb_y, self.x + 40, self.y + self.bb_y

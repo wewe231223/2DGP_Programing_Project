@@ -11,7 +11,7 @@ from ui import UI
 
 
 import util
-
+from eagle import Eagle
 
 def handle_events():
     events = get_events()
@@ -36,7 +36,9 @@ def init():
     server.ui_object = UI()
     game_world.add_object(server.ui_object,5)
 
+
     server.Maincharacter = Character()
+    game_world.add_object(Eagle(),5)
     game_world.add_object(server.Maincharacter, 5)
 
     background_1_1 = BackGround(0,1)
@@ -129,7 +131,7 @@ def init():
 
 
     game_world.add_collision_pair("Obstacle_Character",server.Maincharacter,None)
-
+    game_world.add_collision_pair("Eagle_Character",server.Maincharacter,None)
 
 
 
@@ -145,7 +147,10 @@ def update():
         game_world.add_object(Ob,5)
         game_world.add_collision_pair("Obstacle_Character",None,Ob)
 
-
+    if util.random_percent(0.001):
+        ea = Eagle()
+        game_world.add_object(ea,5)
+        game_world.add_collision_pair("Eagle_Character",None,ea)
 
 
     game_world.update()

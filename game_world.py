@@ -3,6 +3,7 @@ collision_pairs = {}
 import server
 
 
+
 def add_object(object,depth = 0):
     objects[depth].append(object)
 

@@ -100,7 +100,7 @@ class Eagle:
     def render(self):
         pivot = image_pivot(self.frame)
         self.img.clip_draw(pivot,0,ImageSize[self.frame],50,self.x,self.y,200,200)
-        draw_rectangle(*self.get_bb())
+  #      draw_rectangle(*self.get_bb())
 
 
     def handle_event(self,event):

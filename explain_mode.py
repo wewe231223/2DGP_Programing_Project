@@ -1,4 +1,3 @@
-import explain_mode
 import game_framework
 from pico2d import *
 import game_world
@@ -19,7 +18,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_SPACE:
-            game_framework.change_mode(explain_mode)
+            game_framework.change_mode(play_mode)
         else:
             game_world.handle_event(event)
 
@@ -31,9 +30,8 @@ def init():
 
     start_image = load_image("./Resources/Start.png")
 
-
+    titlefont = load_font('./Resources/Pixel.ttf',100)
     font = load_font('./Resources/Pixel.ttf', 50)
-    titlefont = load_font('./Resources/Pixel.ttf', 100)
 
 
 def finish():
@@ -47,10 +45,15 @@ def update():
 def draw():
     clear_canvas()
 
-    start_image.draw(1920 / 2, 1080 / 2, 1920, 1080)
-    titlefont.draw(1920/2  - 150,1080 - 200 , "SKI")
-    font.draw(1920/2 - 300, 1080 / 2- 500, "Press Space")
 
+
+    start_image.draw(1920 / 2, 1080 / 2, 1920, 1080)
+
+    titlefont.draw(1920/2 - 600, 1000,"KEYS")
+    font.draw(1920/2 - 600, 700, "Space = Jump/ Charge Jump")
+    font.draw(1920 / 2 - 600, 600, "Right Arrow = Boost Velocity")
+    font.draw(1920 / 2 - 600, 300, "Watch out Eagles and Rocks! ")
+    font.draw(1920 / 2 - 600, 100, "Press Space for start")
     update_canvas()
 
     pass

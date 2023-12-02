@@ -97,6 +97,9 @@ class Jump:
 
     @staticmethod
     def exit(ch, e):
+
+        ch.landsound.play(1)
+
         ch.frame = 0
 
 
@@ -281,8 +284,8 @@ class Character:
         self.jumpsound = load_wav("./Resources/jump.wav")
         self.damagesound = load_wav("./Resources/damage.wav")
         self.diesound = load_wav("./Resources/die.wav")
-
-
+        self.landsound = load_wav("./Resources/land.wav")
+        self.landsound.set_volume(128)
 
 
         self.opacity = 1.0

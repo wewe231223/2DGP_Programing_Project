@@ -23,7 +23,7 @@ class Obstacle:
 
     def render(self):
         self.image.draw(self.x,self.y,200,200)
-        pico2d.draw_rectangle(*self.get_bb())
+ #       pico2d.draw_rectangle(*self.get_bb())
 
     def update(self):
         self.x -= server.GroundSample.velocity

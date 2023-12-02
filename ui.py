@@ -15,10 +15,18 @@ class UI:
         self.heartimg = UI.heart_image
         self.font = UI.Font
         self.timeforoneblock = 180.0
+        self.statemachine = None
+
+
+        self.is_over = False
+
+
 
     def render(self):
         self.render_heart()
         self.render_velocity()
+        if self.is_over:
+            self.render_over()
 
     def render_heart(self):
         character_heart = server.Maincharacter.heart
@@ -31,7 +39,13 @@ class UI:
 
 
     def render_velocity(self):
-        self.font.draw(60,1000,  f'{round(KMPH,4) : 1f}' + " KM/H")
+
+        self.font.draw(0,1050,  f'{round(KMPH,4) : 1f}' + " KM/H")
+
+    def render_over(self):
+        self.font.draw(1920 / 2 - 300, 1080/  2, "Play Again?")
+
+        self.font.draw(1920 / 2 - 300, 1080 / 2  - 100, "Press Space ")
 
 
 

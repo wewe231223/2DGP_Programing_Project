@@ -2,6 +2,7 @@ from pico2d import *
 
 import Timer
 import game_framework
+import game_world
 import server
 import gameover_mode
 
@@ -64,6 +65,7 @@ class Forward:
     @staticmethod
     def enter(ch, e):
         ch.action = "BOOST"
+        ch.y += 1
         ch.bb_y = 40
         pass
 
@@ -84,6 +86,7 @@ class Jump:
     @staticmethod
     def enter(character, e):
         character.frame = 1
+        character.bb_y = 35
 
 
     @staticmethod
@@ -111,6 +114,7 @@ class ReadyJump:
     @staticmethod
     def enter(character,event):
         character.frame = 0
+        character.bb_y = 40
         character.action = "JUMP"
         Timer.Start_Watch(CHARACTER_STOPWATCH_ID)
         print("Charge")
@@ -159,19 +163,28 @@ class Dead:
     @staticmethod
     def enter(character,event):
         character.action = "COLLIDE"
-
+        character.bb_y = 50
+        character.y += 20
 
     @staticmethod
     def exit(character, event):
-        pass
+        character.action = "DEAD"
+
+        game_framework.push_mode(gameover_mode)
 
     @staticmethod
     def do(character):
         if int(character.frame) == Behavior_Frame[character.action] - 1:
             server.Maincharacter.statemachine.handle_event(("OVER",0))
+            for background in server.BackGrounds:
+                background.statemachine.handle_event(("OVER",0))
+
         else :
             character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
 
+
+        character.Y_Acceleration -= 10 * Timer.delta_time
+        character.y += character.Y_Acceleration
 
     @staticmethod
     def draw(character):
@@ -182,8 +195,7 @@ class Over:
 
     @staticmethod
     def enter(character,event):
-        character.action = "DEAD"
-
+        pass
 
     @staticmethod
     def exit(character, event):
@@ -193,10 +205,9 @@ class Over:
     def do(character):
         character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
 
-
     @staticmethod
     def draw(character):
-        character.image.clip_draw( int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
+        character.image.clip_draw(int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
 
 
 
@@ -251,7 +262,7 @@ class Character:
         self.y = 100
         self.action = 6
         self.frame = 0
-        self.bb_y = 40
+        self.bb_y = 0
         self.statemachine = Character_StateMachine(self)
         self.statemachine.start()
         self.Y_Acceleration = 0.0

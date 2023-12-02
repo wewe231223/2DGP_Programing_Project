@@ -55,8 +55,7 @@ class Idle:
     @staticmethod
     def draw(background):
         background.image.draw(background.x, background.y, get_canvas_width(),get_canvas_height())
-        if background.bb_y:
-            draw_rectangle(*background.get_bb())
+
 
 class Jump:
 
@@ -85,8 +84,7 @@ class Jump:
     @staticmethod
     def draw(background):
         background.image.draw(background.x, background.y, get_canvas_width(),get_canvas_height())
-        if background.bb_y:
-            draw_rectangle(*background.get_bb())
+
 
 class Scroll:
 
@@ -122,8 +120,7 @@ class Scroll:
     @staticmethod
     def draw(background):
         background.image.draw(background.x, background.y, get_canvas_width(), get_canvas_height())
-        if background.bb_y:
-            draw_rectangle(*background.get_bb())
+
 
 
 class Over:
@@ -153,8 +150,7 @@ class Over:
     @staticmethod
     def draw(background):
         background.image.draw(background.x, background.y, get_canvas_width(),get_canvas_height())
-        if background.bb_y:
-            draw_rectangle(*background.get_bb())
+
 
 
 

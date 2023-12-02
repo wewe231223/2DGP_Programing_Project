@@ -31,11 +31,10 @@ def handle_events():
 
 
 def init():
-
     global background_1_1,background_1_2,background_1_3, background_2_1,background_2_2,background_2_3, background_3_1,background_3_2,background_3_3, background_4_1,background_4_2,background_4_3, background_5_1,background_5_2,background_5_3
 
-
-    game_world.add_object(UI(),5)
+    server.ui_object = UI()
+    game_world.add_object(server.ui_object,5)
 
     server.Maincharacter = Character()
     game_world.add_object(server.Maincharacter, 5)
@@ -92,6 +91,28 @@ def init():
 
 
 
+
+    server.BackGrounds.append(background_1_1)
+    server.BackGrounds.append(background_1_2)
+    server.BackGrounds.append(background_1_3)
+
+    server.BackGrounds.append(background_2_1)
+    server.BackGrounds.append(background_2_2)
+    server.BackGrounds.append(background_2_3)
+
+    server.BackGrounds.append(background_3_1)
+    server.BackGrounds.append(background_3_2)
+    server.BackGrounds.append(background_3_3)
+
+    server.BackGrounds.append(background_4_1)
+    server.BackGrounds.append(background_4_2)
+    server.BackGrounds.append(background_4_3)
+
+    server.BackGrounds.append(background_5_1)
+    server.BackGrounds.append(background_5_2)
+    server.BackGrounds.append(background_5_3)
+
+
     game_world.add_objects([background_1_1, background_1_2, background_1_3], 0)
     game_world.add_objects([background_2_1, background_2_2, background_2_3], 1)
     game_world.add_objects([background_3_1, background_3_2, background_3_3], 2)
@@ -113,7 +134,8 @@ def init():
 
 
 def finish():
-    pass
+    game_world.objects = [[] for _ in range(6)]
+    server.clear()
 
 
 def update():

@@ -1,6 +1,7 @@
 import game_framework
 from pico2d import *
 import game_world
+import server
 
 
 def handle_events():
@@ -31,7 +32,7 @@ def finish():
 
 
 def update():
-    pass
+    server.Maincharacter.update()
 
 
 

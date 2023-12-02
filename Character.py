@@ -96,10 +96,9 @@ class Jump:
         if int(character.frame) < 6:
             character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
 
-        if character.Y_Acceleration > 0.0:
-            character.Y_Acceleration -= 9.8 * Timer.delta_time
-            character.y += character.Y_Acceleration
-            print(character.Y_Acceleration)
+        character.Y_Acceleration -= 10 * Timer.delta_time
+        character.y += character.Y_Acceleration
+
 
     @staticmethod
     def draw(ch):
@@ -118,7 +117,7 @@ class ReadyJump:
 
     @staticmethod
     def exit(character,event):
-        character.Y_Acceleration =       clamp(0.0,Timer.Get_Elapsed(CHARACTER_STOPWATCH_ID) * 7,9.0)
+        character.Y_Acceleration = clamp(0.0,Timer.Get_Elapsed(CHARACTER_STOPWATCH_ID) * 15,10.0)
 
         pass
 
@@ -148,6 +147,7 @@ class land:
 
     @staticmethod
     def do(character):
+
         pass
 
     @staticmethod
@@ -168,9 +168,30 @@ class Dead:
     @staticmethod
     def do(character):
         if int(character.frame) == Behavior_Frame[character.action] - 1:
-            game_framework.change_mode(gameover_mode)
+            server.Maincharacter.statemachine.handle_event(("OVER",0))
         else :
             character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
+
+
+    @staticmethod
+    def draw(character):
+        character.image.clip_draw( int(character.frame) * character.width, character.width * Behavior_Action[character.action], character.width, character.width, character.x, character.y, 300, 300 )
+
+
+class Over:
+
+    @staticmethod
+    def enter(character,event):
+        character.action = "DEAD"
+
+
+    @staticmethod
+    def exit(character, event):
+        pass
+
+    @staticmethod
+    def do(character):
+        character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
 
 
     @staticmethod
@@ -192,7 +213,8 @@ class Character_StateMachine:
             ReadyJump: {space_up: Jump,dead : Dead},
             Jump: {landing: land,dead : Dead},
             land: {right_down : Forward, right_not_donw : Idle,dead : Dead},
-            Dead:{},
+            Dead:{over : Over},
+            Over : {}
         }
 
 
@@ -226,7 +248,7 @@ class Character:
         self.width = 150
         self.height = 150
         self.x = 300
-        self.y = 300
+        self.y = 100
         self.action = 6
         self.frame = 0
         self.bb_y = 40
@@ -251,9 +273,12 @@ class Character:
  #       self.test.clip_draw(0,144 * self.testx,144,144,100,100)
 
     def update(self):
+
         self.statemachine.update()
-        self.delta_y = -1
-        self.y += self.delta_y
+
+
+
+
         if self.opacity == 0.5:
             self.invincible_counter += Timer.delta_time
         if self.invincible_counter > CHARACTER_INVINCIBLE_TIME:

@@ -25,14 +25,13 @@ class UI:
 
         layoutx = 60
         layouty = 60
-        print(character_heart)
         for hp in range(character_heart):
             self.heartimg.draw(1920 - layoutx,1080 - layouty)
             layoutx += 80
 
 
     def render_velocity(self):
-        self.font.draw(60,1000,str(round(KMPH,4)) + " KM/H")
+        self.font.draw(60,1000,  f'{round(KMPH,4) : 1f}' + " KM/H")
 
 
 

@@ -104,13 +104,11 @@ class Scroll:
             background.velocity *= 1.001
 
 
-
         if background.x < -get_canvas_width() / 2:
             background.x = background.prevImage.x + get_canvas_width() - background.velocity
 
             if background.depth == 4 :
                 elapsed = Timer.Get_Elapsed(BACKGROUND_STOPWATCH_ID)
-                ui.KMPH = 50 * 3.6 / elapsed
                 Timer.Start_Watch(BACKGROUND_STOPWATCH_ID)
 
 
@@ -128,14 +126,47 @@ class Scroll:
             draw_rectangle(*background.get_bb())
 
 
+class Over:
+
+    @staticmethod
+    def enter(background,event):
+        pass
+
+
+    @staticmethod
+    def exit(background,event):
+        pass
+
+    @staticmethod
+    def do(background):
+        background.velocity *= 0.99
+        if background.velocity < float_info.epsilon:
+            background.velocity = 0.0
+
+        if background.x < -get_canvas_width() / 2:
+            background.x = background.prevImage.x + get_canvas_width() - background.velocity
+        else:
+            background.x -= background.velocity
+        pass
+
+
+    @staticmethod
+    def draw(background):
+        background.image.draw(background.x, background.y, get_canvas_width(),get_canvas_height())
+        if background.bb_y:
+            draw_rectangle(*background.get_bb())
+
+
+
 class BackGround_Statemachine:
     def __init__(self,back):
         self.Back = back
         self.cur_state = Idle
         self.transitions = {
-            Idle: {right_down : Scroll},
-            Scroll: {right_up : Idle, jumped : Jump},
-            Jump: {right_down : Scroll, idle : Idle}
+            Idle: {right_down : Scroll, over: Over},
+            Scroll: {right_up : Idle, jumped : Jump, over: Over},
+            Jump: {right_down : Scroll, idle : Idle, over: Over},
+            Over : {}
         }
 
     def start(self):
@@ -177,6 +208,8 @@ class BackGround:
 
     def render(self):
         self.statemachine.draw()
+        if self.depth == 4:
+            ui.KMPH = self.velocity * 10
 
 
     def update(self):

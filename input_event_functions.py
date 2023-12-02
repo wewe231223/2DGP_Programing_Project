@@ -35,3 +35,8 @@ def idle(e):
 
 def dead(e):
     return e[0] == "DEAD"
+
+
+
+def over(e):
+    return e[0] == "OVER"

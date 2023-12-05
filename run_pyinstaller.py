@@ -52,7 +52,7 @@ for dn in data_folders:
         exit(-1)
 
 print('2. 변환 중입니다......')
-dist_path = os.path.expanduser('~') + '/Documents/pyinstaller/dist'
+dist_path = os.path.expanduser('~') + '/Documents/pyinstaller/ndist'
 work_path = os.path.expanduser('~') + '/Documents/pyinstaller/build'
 
 # dist_path = dist_path.replace('\\', '/')

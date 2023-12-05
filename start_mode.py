@@ -48,7 +48,7 @@ def draw():
     clear_canvas()
 
     start_image.draw(1920 / 2, 1080 / 2, 1920, 1080)
-    titlefont.draw(1920/2  - 150,1080 - 200 , "SKI")
+    titlefont.draw(1920/2  - 580,1080 - 200 , "Snowman Ski")
     font.draw(1920/2 - 300, 1080 / 2- 500, "Press Space")
 
     update_canvas()

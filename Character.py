@@ -271,7 +271,7 @@ class Character:
         self.width = 150
         self.height = 150
         self.x = 300
-        self.y = 100
+        self.y = 90
         self.action = 6
         self.frame = 0
         self.bb_y = 0

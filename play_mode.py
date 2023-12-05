@@ -37,6 +37,7 @@ def init():
     wind_sound = load_wav("./Resources/wind.wav")
     wind_sound.repeat_play()
 
+    server.Score = 0
 
     server.ui_object = UI()
     game_world.add_object(server.ui_object,5)
@@ -151,7 +152,7 @@ def update():
         game_world.add_object(Ob,5)
         game_world.add_collision_pair("Obstacle_Character",None,Ob)
 
-    if util.random_percent(0.0001):
+    if util.random_percent(0.0005):
         ea = Eagle()
         game_world.add_object(ea,5)
         game_world.add_collision_pair("Eagle_Character",None,ea)

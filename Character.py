@@ -108,7 +108,7 @@ class Jump:
         if int(character.frame) < 6:
             character.frame = (character.frame + Behavior_Frame[character.action] * ACTION_PER_TIME * Timer.delta_time) % Behavior_Frame[character.action]
 
-        character.Y_Acceleration -= 10 * Timer.delta_time
+        character.Y_Acceleration -= 15 * Timer.delta_time
         character.y += character.Y_Acceleration
 
 

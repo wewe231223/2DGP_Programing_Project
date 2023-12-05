@@ -1,4 +1,4 @@
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_wav
 import math
 
 import Timer
@@ -51,8 +51,8 @@ class Eagle:
         self.img = Eagle.image
 
         self.frame = 0
-        self.speed = 0.1
-        self.max_speed = 1
+        self.speed = 1.0
+        self.max_speed = 7
         self.x = 1920
         self.y = 1080
         self.angle = math.atan2(server.Maincharacter.x - self.x, server.Maincharacter.y - self.y)
@@ -61,7 +61,9 @@ class Eagle:
         self.dy = math.sin(self.angle) * self.speed
         self.tracking = True
 
-
+        self.houling = load_wav("./Resources/eagle_sound.wav")
+        self.houling.set_volume(60)
+        self.houling.play(1)
     def update(self):
         self.frame = (self.frame + 160 * ACTION_PER_TIME * Timer.delta_time) % 14
         self.frame = int(self.frame)
@@ -69,8 +71,10 @@ class Eagle:
         ty = server.Maincharacter.y
         sx = self.x
         sy = self.y
-        if self.tracking:
 
+
+
+        if self.tracking:
             self.angle = math.atan2(ty - sy, tx - sx)
             self.dx = math.cos(self.angle) * self.speed
             self.dy = math.sin(self.angle) * self.speed
